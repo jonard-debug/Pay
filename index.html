@@ -3,125 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Payment Portal | J-System</title>
+    <title>J-System | Official Payment Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
     <style>
-        :root { --sky-blue: #00BFFF; --dark-blue: #0056b3; --success: #10b981; }
-        * { box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; }
-        .container { background: white; padding: 30px; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; }
-        .welcome-msg h2 { color: #1e293b; margin-bottom: 8px; font-size: 22px; }
-        .welcome-msg p { color: #64748b; font-size: 14px; line-height: 1.5; margin-bottom: 25px; }
+        :root { --primary: #00BFFF; --dark: #0f172a; --success: #10b981; }
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: #f1f5f9; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 15px; }
+        .card { background: white; width: 100%; max-width: 420px; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); overflow: hidden; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
-        .form-group { text-align: left; margin-bottom: 18px; }
-        label { display: block; font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 6px; text-transform: uppercase; }
-        input { width: 100%; padding: 14px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 15px; outline: none; transition: 0.3s; }
-        input:focus { border-color: var(--sky-blue); }
-        
-        /* Magic Red Warnings */
-        .warning { color: #ef4444; font-size: 11px; margin-top: 5px; display: none; font-weight: 500; }
-        input:focus + .warning { display: block; }
+        /* Hype Section */
+        .header { background: var(--dark); color: white; padding: 30px 20px; text-align: center; }
+        .header h2 { margin: 0; font-size: 24px; letter-spacing: 1px; }
+        .header p { color: #94a3b8; font-size: 13px; margin-top: 10px; line-height: 1.5; }
 
-        #submitBtn { display: none; background: var(--sky-blue); color: white; border: none; width: 100%; padding: 18px; border-radius: 15px; font-weight: 700; cursor: pointer; margin-top: 10px; font-size: 14px; }
+        .content { padding: 25px; }
+        .instruction { font-size: 14px; color: #475569; background: #f8fafc; padding: 15px; border-radius: 15px; border-left: 4px solid var(--primary); margin-bottom: 20px; }
+
+        .form-group { margin-bottom: 15px; text-align: left; }
+        label { display: block; font-size: 11px; font-weight: 800; color: #1e293b; margin-bottom: 5px; text-transform: uppercase; }
+        input { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 15px; transition: 0.3s; }
+        input:focus { border-color: var(--primary); outline: none; }
         
-        .timer-box { background: #fff1f2; border: 1px solid #fecdd3; padding: 15px; border-radius: 15px; margin: 20px 0; }
-        .timer { font-size: 26px; font-weight: 800; color: #be123c; }
+        /* Red Warnings */
+        .warning { color: #ef4444; font-size: 11px; margin-top: 5px; font-weight: 600; display: none; }
         
-        .account-details { background: #f1f5f9; padding: 20px; border-radius: 18px; margin-top: 20px; border: 2px dashed #cbd5e1; }
-        .success-toast { position: fixed; top: 20px; right: -350px; background: var(--success); color: white; padding: 15px 25px; border-radius: 12px; transition: 0.5s; font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .telegram-btn { display: block; background: #0088cc; color: white; padding: 15px; border-radius: 12px; text-decoration: none; font-weight: bold; margin-top: 15px; }
+        .btn { width: 100%; padding: 18px; border: none; border-radius: 15px; font-weight: 800; cursor: pointer; transition: 0.3s; font-size: 14px; margin-top: 10px; }
+        #submitBtn { background: var(--primary); color: white; display: none; }
+        
+        /* Payment Section (Hidden initially) */
+        #paymentArea { display: none; text-align: center; animation: slideUp 0.4s ease; }
+        @keyframes slideUp { from { opacity: 0; margin-top: 20px; } to { opacity: 1; margin-top: 0; } }
+
+        .timer-box { background: #fff1f2; padding: 15px; border-radius: 20px; margin-bottom: 20px; }
+        .timer { font-size: 32px; font-weight: 900; color: #be123c; }
+
+        .acc-card { background: #f8fafc; border: 2px dashed #cbd5e1; padding: 20px; border-radius: 20px; cursor: pointer; position: relative; }
+        .acc-card:active { background: #e2e8f0; }
+        .copy-hint { font-size: 10px; color: var(--primary); font-weight: bold; }
+
+        .telegram-btn { background: #0088cc; color: white; text-decoration: none; display: block; }
+        
+        /* Phone input custom styling */
+        .iti { width: 100%; }
     </style>
 </head>
 <body>
 
-<div id="toast" class="success-toast">Details submitted successfully! ✅</div>
-
-<div class="container">
-    <div class="welcome-msg">
-        <h2>Billionaire Brotherhood 🦅</h2>
-        <p>Secure your spot in the J-System. Please provide your active details to initialize delivery.</p>
+<div class="card">
+    <div class="header">
+        <h2>BILLIONAIRE BROTHERHOOD 🦅</h2>
+        <p>Congratulations on taking the boldest step toward financial mastery. The J-System Blueprint is waiting for its next success story. Welcome to the elite.</p>
     </div>
 
-    <form id="payForm">
-        <div class="form-group">
-            <label>Full Name</label>
-            <input type="text" id="name" placeholder="Enter name" required>
-            <div class="warning">Name must be what they know you for officially.</div>
+    <div class="content">
+        <div id="formSection">
+            <div class="instruction">
+                <b>Priority Notice:</b> To ensure instant delivery of your package, please provide your active details below. Your acceleration starts now!
+            </div>
+
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="name" placeholder="Enter name what you're known for">
+                <div class="warning" id="nameWarn">Please enter your official name.</div>
+            </div>
+
+            <div class="form-group">
+                <label>Professional Email</label>
+                <input type="email" id="email" placeholder="Email you check daily">
+                <div class="warning" id="emailWarn">Please enter a valid active email address.</div>
+            </div>
+
+            <div class="form-group">
+                <label>WhatsApp Phone Number</label>
+                <input type="tel" id="phone">
+                <div class="warning" id="phoneWarn">Invalid phone number. Please check the code.</div>
+            </div>
+
+            <button id="submitBtn" class="btn" onclick="processEntry()">SUBMIT AND CONTINUE WITH PAYMENTS</button>
         </div>
 
-        <div class="form-group">
-            <label>Active Email Address</label>
-            <input type="email" id="email" placeholder="Enter active email" required>
-            <div class="warning">Email must be one you use regularly and is active.</div>
-        </div>
+        <div id="paymentArea">
+            <div class="timer-box">
+                <div style="font-size: 11px; font-weight: 700; color: #be123c;">OFFER CLOSING SOON:</div>
+                <div class="timer" id="timer">60:00</div>
+                <div style="font-size: 11px; color: #475569;">Price jumps to <b>N50,000</b> when timer hits zero.</div>
+            </div>
 
-        <div class="form-group">
-            <label>WhatsApp Phone Number</label>
-            <input type="tel" id="phone" placeholder="Enter WhatsApp number" required>
-            <div class="warning">Provide your active number for quick delivery.</div>
-        </div>
+            <p style="font-size: 13px; color: #1e293b; font-weight: 600;">Tap account number to copy 👇</p>
+            <div class="acc-card" onclick="copyAcc()">
+                <div style="font-size: 11px; color: #64748b;">OPAY (DIGITAL BANK)</div>
+                <div style="font-size: 24px; font-weight: 900; color: #0f172a;" id="accNum">7080421602</div>
+                <div style="font-size: 14px; font-weight: 600; color: #334155;">Bethuel Ochomada Odakwaji</div>
+                <div class="copy-hint" id="copyText">TAP TO COPY ✅</div>
+            </div>
 
-        <button type="button" id="submitBtn" onclick="handleDetails()">SUBMIT AND CONTINUE WITH PAYMENTS</button>
-    </form>
-
-    <div id="paymentSection" style="display:none;">
-        <div class="timer-box">
-            <p style="margin:0; font-size: 11px; color: #9f1239; font-weight: 700;">OFFER EXPIRES IN:</p>
-            <div class="timer" id="countdown">60:00</div>
-            <p style="margin:5px 0 0; font-size: 11px; color: #475569;">Price returns to <b>N50,000</b> very soon.</p>
-        </div>
-
-        <div class="account-details">
-            <p style="font-size: 10px; color: #64748b; margin: 0; font-weight: 800;">BANK TRANSFER DETAILS:</p>
-            <h3 style="margin: 8px 0; color: #0f172a;">OPAY - 7080421602</h3>
-            <p style="margin: 0; font-weight: 600; color: #334155;">Bethuel Ochomada Odakwaji</p>
-        </div>
-
-        <div style="margin-top: 25px; font-size: 13px; color: #1e293b;">
-            <p>After your payment, come back here and tap the button below to send your proof of payment.</p>
-            <a href="https://t.me/Jbeth_1" class="telegram-btn">📤 Send Proof of Payment</a>
+            <p style="font-size: 12px; color: #64748b; margin-top: 20px;">Once payment is made, send your proof below:</p>
+            <a href="https://t.me/YOUR_USERNAME" class="btn telegram-btn">📤 SEND PROOF TO TELEGRAM</a>
         </div>
     </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
 <script>
-    const inputs = document.querySelectorAll('input');
-    const btn = document.getElementById('submitBtn');
+    // Initialize Phone Input with Nigeria default
+    const phoneInput = window.intlTelInput(document.querySelector("#phone"), {
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        initialCountry: "ng",
+        separateDialCode: true,
+    });
 
-    // Show button only when form is filled
+    const inputs = document.querySelectorAll('input');
+    const submitBtn = document.getElementById('submitBtn');
+
+    // Show button logic
     inputs.forEach(input => {
         input.addEventListener('input', () => {
-            const isFilled = [...inputs].every(i => i.value.trim() !== "");
-            btn.style.display = isFilled ? 'block' : 'none';
+            const allFilled = [...inputs].every(i => i.value.trim().length > 2);
+            submitBtn.style.display = allFilled ? 'block' : 'none';
         });
     });
 
-    function handleDetails() {
-        // Success notification
-        const toast = document.getElementById('toast');
-        toast.style.right = '20px';
+    function processEntry() {
+        const email = document.getElementById('email').value;
+        const name = document.getElementById('name').value;
         
-        // Hide form, show payment info
-        document.getElementById('payForm').style.display = 'none';
-        document.getElementById('paymentSection').style.display = 'block';
+        // Basic Validation
+        if(!email.includes('@')) {
+            document.getElementById('emailWarn').style.display = 'block';
+            return;
+        }
+        if(!phoneInput.isValidNumber()) {
+            document.getElementById('phoneWarn').style.display = 'block';
+            return;
+        }
 
+        // Single Page Transition
+        document.getElementById('formSection').style.display = 'none';
+        document.getElementById('paymentArea').style.display = 'block';
         startTimer(60 * 60);
-        
-        // Hide toast after 3 seconds
-        setTimeout(() => { toast.style.right = '-350px'; }, 3000);
+    }
+
+    function copyAcc() {
+        const num = document.getElementById('accNum').innerText;
+        navigator.clipboard.writeText(num);
+        document.getElementById('copyText').innerText = "COPIED TO CLIPBOARD! ✨";
+        setTimeout(() => { document.getElementById('copyText').innerText = "TAP TO COPY ✅"; }, 2000);
     }
 
     function startTimer(duration) {
-        let timer = duration, minutes, seconds;
-        setInterval(function () {
-            minutes = parseInt(timer / 60, 10);
-            seconds = parseInt(timer % 60, 10);
-            minutes = minutes < 10 ? "0" + minutes : minutes;
-            seconds = seconds < 10 ? "0" + seconds : seconds;
-            document.getElementById('countdown').textContent = minutes + ":" + seconds;
+        let timer = duration, min, sec;
+        setInterval(() => {
+            min = Math.floor(timer / 60);
+            sec = timer % 60;
+            document.getElementById('timer').textContent = `${min}:${sec < 10 ? '0'+sec : sec}`;
             if (--timer < 0) timer = 0;
         }, 1000);
     }
 </script>
 
 </body>
-  </html>
+                    </html>

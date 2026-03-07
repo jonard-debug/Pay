@@ -9,38 +9,25 @@
         :root { --primary: #00BFFF; --dark: #0f172a; --error: #ef4444; }
         * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background: #f1f5f9; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; }
-        
         .card { background: white; width: 100%; max-width: 420px; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); overflow: hidden; margin-bottom: 20px; }
-        
         .header { background: var(--dark); color: white; padding: 30px 20px; text-align: center; }
         .header h2 { margin: 0; font-size: 24px; letter-spacing: 1px; }
         .header p { color: #94a3b8; font-size: 13px; margin-top: 10px; line-height: 1.5; }
-
         .content { padding: 25px; }
         .instruction { font-size: 14px; color: #475569; background: #f8fafc; padding: 15px; border-radius: 15px; border-left: 4px solid var(--primary); margin-bottom: 20px; }
-
         .form-group { margin-bottom: 18px; text-align: left; }
         label { display: block; font-size: 11px; font-weight: 800; color: #1e293b; margin-bottom: 5px; text-transform: uppercase; }
         input { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 15px; outline: none; }
         input:focus { border-color: var(--primary); }
-        
-        /* Your Red Warnings are Back! */
         .warning { color: var(--error); font-size: 11px; margin-top: 5px; font-weight: 600; display: none; }
         input:focus + .warning { display: block; }
-
         .btn { width: 100%; padding: 18px; border: none; border-radius: 15px; font-weight: 800; cursor: pointer; font-size: 14px; }
         #submitBtn { background: var(--primary); color: white; display: none; margin-top: 10px; }
-        
-        /* Payment Section (Now part of the same page) */
         #paymentArea { display: none; padding-top: 20px; border-top: 2px solid #f1f5f9; margin-top: 20px; text-align: center; }
-
         .timer-box { background: #fff1f2; padding: 15px; border-radius: 20px; margin-bottom: 20px; border: 1px solid #fecdd3; }
         .timer { font-size: 32px; font-weight: 900; color: #be123c; }
-
-        .acc-card { background: #f8fafc; border: 2px dashed #cbd5e1; padding: 20px; border-radius: 20px; cursor: pointer; transition: 0.2s; }
-        .acc-card:active { background: #e2e8f0; }
+        .acc-card { background: #f8fafc; border: 2px dashed #cbd5e1; padding: 20px; border-radius: 20px; cursor: pointer; }
         .copy-hint { font-size: 11px; color: var(--primary); font-weight: bold; margin-top: 5px; }
-
         .telegram-btn { background: #0088cc; color: white; text-decoration: none; display: block; margin-top: 20px; }
         .iti { width: 100%; }
     </style>
@@ -55,102 +42,95 @@
 
     <div class="content">
         <div id="formSection">
-            <div class="instruction">
-                <b>Priority Notice:</b> Fill the boxes below for quick delivery of your package.
-            </div>
-
+            <div class="instruction"><b>Priority Notice:</b> Fill the boxes below for quick delivery.</div>
             <div class="form-group">
                 <label>Full Name</label>
-                <input type="text" id="name" placeholder="Name what you're known for">
+                <input type="text" id="name" placeholder="Your name">
                 <div class="warning">Name must be what they know you for officially. 🔴</div>
             </div>
-
             <div class="form-group">
-                <label>Professional Email</label>
-                <input type="email" id="email" placeholder="Email you check regularly">
+                <label>Email</label>
+                <input type="email" id="email" placeholder="Your email">
                 <div class="warning">Email must be active and used recently. 🔴</div>
             </div>
-
             <div class="form-group">
-                <label>WhatsApp Phone Number</label>
-                <input type="tel" id="phone">
-                <div class="warning" id="phoneWarn">Provide your active WhatsApp number. 🔴</div>
+                <label>Phone Number</label>
+                <input type="tel" id="phone" placeholder="Enter number">
+                <div class="warning">Provide your active phone number. 🔴</div>
             </div>
-
-            <button id="submitBtn" class="btn" onclick="showPayment()">SUBMIT AND CONTINUE WITH PAYMENTS</button>
+            <button id="submitBtn" class="btn" onclick="showPayment()">SUBMIT AND CONTINUE WITH YOUR PAYMENTS</button>
         </div>
 
         <div id="paymentArea">
             <div class="timer-box">
                 <div style="font-size: 11px; font-weight: 700; color: #be123c;">OFFER CLOSING SOON:</div>
                 <div class="timer" id="timer">60:00</div>
-                <div style="font-size: 11px; color: #475569;">Price jumps to <b>N50,000</b> very soon.</div>
             </div>
-
             <p style="font-size: 13px; font-weight: 700;">Tap account number to copy 👇</p>
             <div class="acc-card" onclick="copyAcc()">
-                <div style="font-size: 11px; color: #64748b;">OPAY (DIGITAL BANK)</div>
-                <div style="font-size: 24px; font-weight: 900; color: #0f172a;" id="accNum">7080421602</div>
+                <div style="font-size: 24px; font-weight: 900;" id="accNum">7080421602</div>
                 <div style="font-size: 14px; font-weight: 600;">Bethuel Ochomada Odakwaji</div>
                 <div class="copy-hint" id="copyText">TAP TO COPY ✅</div>
             </div>
-
-            <p style="font-size: 12px; color: #64748b; margin-top: 20px;">After payment, tap below for your proof:</p>
-            <a href="https://t.me/YOUR_USERNAME" class="btn telegram-btn">📤 SEND PROOF TO TELEGRAM</a>
+            <a href="https://t.me/Jbeth_1" class="btn telegram-btn">📤 SEND PROOF TO TELEGRAM</a>
         </div>
     </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
 <script>
-    // 1. Setup Phone with Strict Length
-    const phoneElement = document.querySelector("#phone");
-    const iti = window.intlTelInput(phoneElement, {
+    const phoneInput = document.querySelector("#phone");
+    const iti = window.intlTelInput(phoneInput, {
         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
         initialCountry: "ng",
         separateDialCode: true,
     });
 
-    // 2. Button Logic
-    const inputs = document.querySelectorAll('input');
-    inputs.forEach(input => {
-        input.addEventListener('input', () => {
-            const allFilled = [...inputs].every(i => i.value.trim().length > 3);
-            document.getElementById('submitBtn').style.display = allFilled ? 'block' : 'none';
-        });
+    // --- NEW STRICT LOGIC ---
+    phoneInput.addEventListener('input', function() {
+        // Remove any non-numbers
+        this.value = this.value.replace(/\D/g, '');
+        
+        // Check valid length for the selected country
+        if (this.value.length > 0) {
+            const countryData = iti.getSelectedCountryData();
+            // Most countries are 10-11 digits. We'll use the ITI validator to stop over-typing.
+            if (iti.isValidNumber() === false && this.value.length > 12) {
+                this.value = this.value.slice(0, 11); 
+            }
+        }
+        checkForm();
     });
 
-    // 3. Show Payment & Scroll
+    function checkForm() {
+        const allFilled = document.getElementById('name').value.length > 2 && 
+                          document.getElementById('email').value.includes('@') && 
+                          iti.isValidNumber();
+        document.getElementById('submitBtn').style.display = allFilled ? 'block' : 'none';
+    }
+
+    document.getElementById('name').addEventListener('input', checkForm);
+    document.getElementById('email').addEventListener('input', checkForm);
+
     function showPayment() {
-        // Validate number length strictly
         if (!iti.isValidNumber()) {
-            alert("Phone number is incorrect for your country! ❌");
+            alert("This number is too short or incorrect for your country! ❌");
             return;
         }
-
-        const payArea = document.getElementById('paymentArea');
-        payArea.style.display = 'block';
-        payArea.scrollIntoView({ behavior: 'smooth' }); // Automatic Scroll!
+        document.getElementById('paymentArea').style.display = 'block';
+        document.getElementById('paymentArea').scrollIntoView({ behavior: 'smooth' });
         startTimer(60 * 60);
     }
 
-    // 4. FIXED COPY TO CLIPBOARD Magic
     function copyAcc() {
         const textToCopy = "7080421602";
-        
-        // This is the most reliable way for phones
         const textArea = document.createElement("textarea");
         textArea.value = textToCopy;
         document.body.appendChild(textArea);
         textArea.select();
-        try {
-            document.execCommand('copy');
-            document.getElementById('copyText').innerText = "COPIED TO CLIPBOARD! ✨";
-        } catch (err) {
-            console.error('Copy failed');
-        }
+        document.execCommand('copy');
         document.body.removeChild(textArea);
-        
+        document.getElementById('copyText').innerText = "COPIED TO CLIPBOARD! ✨";
         setTimeout(() => { document.getElementById('copyText').innerText = "TAP TO COPY ✅"; }, 2500);
     }
 
@@ -164,6 +144,5 @@
         }, 1000);
     }
 </script>
-
 </body>
-                    </html>
+    </html>

@@ -6,13 +6,12 @@
     <title>J-System | Official Payment Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
     <style>
-        :root { --primary: #00BFFF; --dark: #0f172a; --success: #10b981; }
+        :root { --primary: #00BFFF; --dark: #0f172a; --error: #ef4444; }
         * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background: #f1f5f9; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 15px; }
-        .card { background: white; width: 100%; max-width: 420px; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); overflow: hidden; animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        body { background: #f1f5f9; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; }
         
-        /* Hype Section */
+        .card { background: white; width: 100%; max-width: 420px; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); overflow: hidden; margin-bottom: 20px; }
+        
         .header { background: var(--dark); color: white; padding: 30px 20px; text-align: center; }
         .header h2 { margin: 0; font-size: 24px; letter-spacing: 1px; }
         .header p { color: #94a3b8; font-size: 13px; margin-top: 10px; line-height: 1.5; }
@@ -20,31 +19,29 @@
         .content { padding: 25px; }
         .instruction { font-size: 14px; color: #475569; background: #f8fafc; padding: 15px; border-radius: 15px; border-left: 4px solid var(--primary); margin-bottom: 20px; }
 
-        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-group { margin-bottom: 18px; text-align: left; }
         label { display: block; font-size: 11px; font-weight: 800; color: #1e293b; margin-bottom: 5px; text-transform: uppercase; }
-        input { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 15px; transition: 0.3s; }
-        input:focus { border-color: var(--primary); outline: none; }
+        input { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 15px; outline: none; }
+        input:focus { border-color: var(--primary); }
         
-        /* Red Warnings */
-        .warning { color: #ef4444; font-size: 11px; margin-top: 5px; font-weight: 600; display: none; }
-        
-        .btn { width: 100%; padding: 18px; border: none; border-radius: 15px; font-weight: 800; cursor: pointer; transition: 0.3s; font-size: 14px; margin-top: 10px; }
-        #submitBtn { background: var(--primary); color: white; display: none; }
-        
-        /* Payment Section (Hidden initially) */
-        #paymentArea { display: none; text-align: center; animation: slideUp 0.4s ease; }
-        @keyframes slideUp { from { opacity: 0; margin-top: 20px; } to { opacity: 1; margin-top: 0; } }
+        /* Your Red Warnings are Back! */
+        .warning { color: var(--error); font-size: 11px; margin-top: 5px; font-weight: 600; display: none; }
+        input:focus + .warning { display: block; }
 
-        .timer-box { background: #fff1f2; padding: 15px; border-radius: 20px; margin-bottom: 20px; }
+        .btn { width: 100%; padding: 18px; border: none; border-radius: 15px; font-weight: 800; cursor: pointer; font-size: 14px; }
+        #submitBtn { background: var(--primary); color: white; display: none; margin-top: 10px; }
+        
+        /* Payment Section (Now part of the same page) */
+        #paymentArea { display: none; padding-top: 20px; border-top: 2px solid #f1f5f9; margin-top: 20px; text-align: center; }
+
+        .timer-box { background: #fff1f2; padding: 15px; border-radius: 20px; margin-bottom: 20px; border: 1px solid #fecdd3; }
         .timer { font-size: 32px; font-weight: 900; color: #be123c; }
 
-        .acc-card { background: #f8fafc; border: 2px dashed #cbd5e1; padding: 20px; border-radius: 20px; cursor: pointer; position: relative; }
+        .acc-card { background: #f8fafc; border: 2px dashed #cbd5e1; padding: 20px; border-radius: 20px; cursor: pointer; transition: 0.2s; }
         .acc-card:active { background: #e2e8f0; }
-        .copy-hint { font-size: 10px; color: var(--primary); font-weight: bold; }
+        .copy-hint { font-size: 11px; color: var(--primary); font-weight: bold; margin-top: 5px; }
 
-        .telegram-btn { background: #0088cc; color: white; text-decoration: none; display: block; }
-        
-        /* Phone input custom styling */
+        .telegram-btn { background: #0088cc; color: white; text-decoration: none; display: block; margin-top: 20px; }
         .iti { width: 100%; }
     </style>
 </head>
@@ -53,114 +50,49 @@
 <div class="card">
     <div class="header">
         <h2>BILLIONAIRE BROTHERHOOD 🦅</h2>
-        <p>Congratulations on taking the boldest step toward financial mastery. The J-System Blueprint is waiting for its next success story. Welcome to the elite.</p>
+        <p>Congratulations on taking the boldest step toward financial mastery. Welcome to the elite.</p>
     </div>
 
     <div class="content">
         <div id="formSection">
             <div class="instruction">
-                <b>Priority Notice:</b> To ensure instant delivery of your package, please provide your active details below. Your acceleration starts now!
+                <b>Priority Notice:</b> Fill the boxes below for quick delivery of your package.
             </div>
 
             <div class="form-group">
                 <label>Full Name</label>
-                <input type="text" id="name" placeholder="Enter name what you're known for">
-                <div class="warning" id="nameWarn">Please enter your official name.</div>
+                <input type="text" id="name" placeholder="Name">
+                <div class="warning">Name must be what they know you for officially. 🔴</div>
             </div>
 
             <div class="form-group">
-                <label>Professional Email</label>
-                <input type="email" id="email" placeholder="Email you check daily">
-                <div class="warning" id="emailWarn">Please enter a valid active email address.</div>
+                <label>Email</label>
+                <input type="email" id="email" placeholder="Email you check regularly">
+                <div class="warning">Email must be active and used recently. 🔴</div>
             </div>
 
             <div class="form-group">
-                <label>WhatsApp Phone Number</label>
+                <label>Phone Number</label>
                 <input type="tel" id="phone">
-                <div class="warning" id="phoneWarn">Invalid phone number. Please check the code.</div>
+                <div class="warning" id="phoneWarn">Provide your active WhatsApp number. 🔴</div>
             </div>
 
-            <button id="submitBtn" class="btn" onclick="processEntry()">SUBMIT AND CONTINUE WITH PAYMENTS</button>
+            <button id="submitBtn" class="btn" onclick="showPayment()">SUBMIT AND CONTINUE WITH YOUR PAYMENTS</button>
         </div>
 
         <div id="paymentArea">
             <div class="timer-box">
                 <div style="font-size: 11px; font-weight: 700; color: #be123c;">OFFER CLOSING SOON:</div>
                 <div class="timer" id="timer">60:00</div>
-                <div style="font-size: 11px; color: #475569;">Price jumps to <b>N50,000</b> when timer hits zero.</div>
+                <div style="font-size: 11px; color: #475569;">Price jumps to <b>N50,000</b> very soon.</div>
             </div>
 
-            <p style="font-size: 13px; color: #1e293b; font-weight: 600;">Tap account number to copy 👇</p>
+            <p style="font-size: 13px; font-weight: 700;">Tap account number to copy 👇</p>
             <div class="acc-card" onclick="copyAcc()">
                 <div style="font-size: 11px; color: #64748b;">OPAY (DIGITAL BANK)</div>
                 <div style="font-size: 24px; font-weight: 900; color: #0f172a;" id="accNum">7080421602</div>
-                <div style="font-size: 14px; font-weight: 600; color: #334155;">Bethuel Ochomada Odakwaji</div>
+                <div style="font-size: 14px; font-weight: 600;">Bethuel Ochomada Odakwaji</div>
                 <div class="copy-hint" id="copyText">TAP TO COPY ✅</div>
             </div>
 
-            <p style="font-size: 12px; color: #64748b; margin-top: 20px;">Once payment is made, send your proof below:</p>
-            <a href="https://t.me/YOUR_USERNAME" class="btn telegram-btn">📤 SEND PROOF TO TELEGRAM</a>
-        </div>
-    </div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-<script>
-    // Initialize Phone Input with Nigeria default
-    const phoneInput = window.intlTelInput(document.querySelector("#phone"), {
-        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-        initialCountry: "ng",
-        separateDialCode: true,
-    });
-
-    const inputs = document.querySelectorAll('input');
-    const submitBtn = document.getElementById('submitBtn');
-
-    // Show button logic
-    inputs.forEach(input => {
-        input.addEventListener('input', () => {
-            const allFilled = [...inputs].every(i => i.value.trim().length > 2);
-            submitBtn.style.display = allFilled ? 'block' : 'none';
-        });
-    });
-
-    function processEntry() {
-        const email = document.getElementById('email').value;
-        const name = document.getElementById('name').value;
-        
-        // Basic Validation
-        if(!email.includes('@')) {
-            document.getElementById('emailWarn').style.display = 'block';
-            return;
-        }
-        if(!phoneInput.isValidNumber()) {
-            document.getElementById('phoneWarn').style.display = 'block';
-            return;
-        }
-
-        // Single Page Transition
-        document.getElementById('formSection').style.display = 'none';
-        document.getElementById('paymentArea').style.display = 'block';
-        startTimer(60 * 60);
-    }
-
-    function copyAcc() {
-        const num = document.getElementById('accNum').innerText;
-        navigator.clipboard.writeText(num);
-        document.getElementById('copyText').innerText = "COPIED TO CLIPBOARD! ✨";
-        setTimeout(() => { document.getElementById('copyText').innerText = "TAP TO COPY ✅"; }, 2000);
-    }
-
-    function startTimer(duration) {
-        let timer = duration, min, sec;
-        setInterval(() => {
-            min = Math.floor(timer / 60);
-            sec = timer % 60;
-            document.getElementById('timer').textContent = `${min}:${sec < 10 ? '0'+sec : sec}`;
-            if (--timer < 0) timer = 0;
-        }, 1000);
-    }
-</script>
-
-</body>
-                    </html>
+            <p style="font-size: 12px; color: #64748b; margin-top: 20px;">After payment, tap below for your proof:</p>

@@ -16,7 +16,7 @@
         .content { padding: 25px; }
         .instruction { font-size: 14px; color: #475569; background: #f8fafc; padding: 15px; border-radius: 15px; border-left: 4px solid var(--primary); margin-bottom: 20px; }
         .form-group { margin-bottom: 18px; text-align: left; }
-        label { display: block; font-size: 11px; font-weight: 800; color: #1e293b; margin-bottom: 5px; text-transform: uppercase; }
+        label { display: block; font-size: 12px; font-weight: 800; color: #1e293b; margin-bottom: 5px; }
         input { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 15px; outline: none; }
         input:focus { border-color: var(--primary); }
         .warning { color: var(--error); font-size: 11px; margin-top: 5px; font-weight: 600; display: none; }
@@ -26,9 +26,12 @@
         #paymentArea { display: none; padding-top: 20px; border-top: 2px solid #f1f5f9; margin-top: 20px; text-align: center; }
         .timer-box { background: #fff1f2; padding: 15px; border-radius: 20px; margin-bottom: 20px; border: 1px solid #fecdd3; }
         .timer { font-size: 32px; font-weight: 900; color: #be123c; }
+        .currency-toggle { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }
+        .curr-btn { padding: 8px 15px; border-radius: 10px; border: 1px solid #e2e8f0; cursor: pointer; font-size: 12px; font-weight: bold; background: white; }
+        .curr-btn.active { background: var(--dark); color: white; border-color: var(--dark); }
         .acc-card { background: #f8fafc; border: 2px dashed #cbd5e1; padding: 20px; border-radius: 20px; cursor: pointer; }
         .copy-hint { font-size: 11px; color: var(--primary); font-weight: bold; margin-top: 5px; }
-        .telegram-btn { background: #0088cc; color: white; text-decoration: none; display: block; margin-top: 20px; }
+        .telegram-btn { background: #0088cc; color: white; text-decoration: none; display: block; margin-top: 15px; }
         .iti { width: 100%; }
     </style>
 </head>
@@ -42,23 +45,23 @@
 
     <div class="content">
         <div id="formSection">
-            <div class="instruction"><b>Priority Notice:</b> Fill the boxes below for quick delivery.</div>
+            <div class="instruction"><b>Priority Notice:</b> Fill the boxes below for quick delivery of your package.</div>
             <div class="form-group">
-                <label>Full Name</label>
-                <input type="text" id="name" placeholder="Your name">
+                <label>Name</label>
+                <input type="text" id="name" placeholder="Enter name">
                 <div class="warning">Name must be what they know you for officially. 🔴</div>
             </div>
             <div class="form-group">
                 <label>Email</label>
-                <input type="email" id="email" placeholder="Your email">
+                <input type="email" id="email" placeholder="Enter email">
                 <div class="warning">Email must be active and used recently. 🔴</div>
             </div>
             <div class="form-group">
-                <label>Phone Number</label>
-                <input type="tel" id="phone" placeholder="Enter number">
-                <div class="warning">Provide your active phone number. 🔴</div>
+                <label>Phone number</label>
+                <input type="tel" id="phone" placeholder="Enter phone">
+                <div class="warning">Provide your active WhatsApp number. 🔴</div>
             </div>
-            <button id="submitBtn" class="btn" onclick="showPayment()">SUBMIT AND CONTINUE WITH YOUR PAYMENTS</button>
+            <button id="submitBtn" class="btn" onclick="showPayment()">SUBMIT AND CONTINUE WITH PAYMENTS</button>
         </div>
 
         <div id="paymentArea">
@@ -66,16 +69,24 @@
                 <div style="font-size: 11px; font-weight: 700; color: #be123c;">OFFER CLOSING SOON:</div>
                 <div class="timer" id="timer">60:00</div>
             </div>
-            <p style="font-size: 13px; font-weight: 700;">Tap account number to copy 👇</p>
+
+            <div class="currency-toggle">
+                <div class="curr-btn active" id="btnNgn" onclick="setCurrency('NGN')">🇳🇬 PAY IN NGN</div>
+                <div class="curr-btn" id="btnUsd" onclick="setCurrency('USD')">🇺🇸 PAY IN USD</div>
+            </div>
+
+            <p style="font-size: 13px; font-weight: 700;">Tap details below to copy 👇</p>
             <div class="acc-card" onclick="copyAcc()">
-                <div style="font-size: 24px; font-weight: 900;" id="accNum">7080421602</div>
-                <div style="font-size: 14px; font-weight: 600;">Bethuel Ochomada Odakwaji</div>
+                <div id="bankName" style="font-size: 11px; color: #64748b; font-weight: bold; margin-bottom: 5px;">BANK: OPAY</div>
+                <div style="font-size: 26px; font-weight: 900; color: #0f172a;" id="accNum">7080421602</div>
+                <div style="font-size: 14px; font-weight: 600;" id="accName">Bethuel Ochomada Odakwaji</div>
                 <div class="copy-hint" id="copyText">TAP TO COPY ✅</div>
             </div>
+
+            <p style="font-size: 13px; color: #475569; margin-top: 25px; line-height: 1.5;">
+                After your payment, <b>come back here</b> and tap the button below to send your proof of payment. 💳✨
+            </p>
             <a href="https://t.me/Jbeth_1" class="btn telegram-btn">📤 SEND PROOF TO TELEGRAM</a>
-   <p style="font-size: 13px; color: #475569; margin-top: 25px; line-height: 1.5;">
-    After your payment, <b>come back here</b> and tap the button below to send your proof of payment. 💳✨
-   </p>
         </div>
     </div>
 </div>
@@ -89,26 +100,16 @@
         separateDialCode: true,
     });
 
-    // --- NEW STRICT LOGIC ---
     phoneInput.addEventListener('input', function() {
-        // Remove any non-numbers
         this.value = this.value.replace(/\D/g, '');
-        
-        // Check valid length for the selected country
-        if (this.value.length > 0) {
-            const countryData = iti.getSelectedCountryData();
-            // Most countries are 10-11 digits. We'll use the ITI validator to stop over-typing.
-            if (iti.isValidNumber() === false && this.value.length > 12) {
-                this.value = this.value.slice(0, 11); 
-            }
-        }
+        if (this.value.length > 11) this.value = this.value.slice(0, 11);
         checkForm();
     });
 
     function checkForm() {
-        const allFilled = document.getElementById('name').value.length > 2 && 
-                          document.getElementById('email').value.includes('@') && 
-                          iti.isValidNumber();
+        const nameVal = document.getElementById('name').value.trim();
+        const emailVal = document.getElementById('email').value.trim();
+        const allFilled = nameVal.length > 2 && emailVal.includes('@') && iti.isValidNumber();
         document.getElementById('submitBtn').style.display = allFilled ? 'block' : 'none';
     }
 
@@ -116,17 +117,35 @@
     document.getElementById('email').addEventListener('input', checkForm);
 
     function showPayment() {
-        if (!iti.isValidNumber()) {
-            alert("This number is too short or incorrect for your country! ❌");
-            return;
-        }
         document.getElementById('paymentArea').style.display = 'block';
         document.getElementById('paymentArea').scrollIntoView({ behavior: 'smooth' });
         startTimer(60 * 60);
     }
 
+    function setCurrency(type) {
+        const btnNgn = document.getElementById('btnNgn');
+        const btnUsd = document.getElementById('btnUsd');
+        const bank = document.getElementById('bankName');
+        const num = document.getElementById('accNum');
+        const name = document.getElementById('accName');
+
+        if (type === 'USD') {
+            btnUsd.classList.add('active');
+            btnNgn.classList.remove('active');
+            bank.innerText = "BANK: OPAY (USD PORTAL)";
+            num.innerText = "7080421602"; 
+            name.innerText = "Bethuel Ochomada Odakwaji";
+        } else {
+            btnNgn.classList.add('active');
+            btnUsd.classList.remove('active');
+            bank.innerText = "BANK: OPAY";
+            num.innerText = "7080421602";
+            name.innerText = "Bethuel Ochomada Odakwaji";
+        }
+    }
+
     function copyAcc() {
-        const textToCopy = "7080421602";
+        const textToCopy = document.getElementById('accNum').innerText;
         const textArea = document.createElement("textarea");
         textArea.value = textToCopy;
         document.body.appendChild(textArea);
@@ -148,4 +167,4 @@
     }
 </script>
 </body>
-    </html>
+                </html>
